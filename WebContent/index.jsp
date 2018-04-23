@@ -7,8 +7,16 @@
 <title>Convert Csv Demo</title>
 </head>
 <body>
-	<form action="<%=request.getContextPath()%>/ConvertCsv/ConvertCsv.do">
-		<input type="submit" value="導出CSV">
+	<form action="<%=request.getContextPath()%>/ConvertCsv/ConvertORACLECsv.do">
+		<input type="submit" value="導出ORacleCSV">
+	</form>
+	
+	<form action="<%=request.getContextPath()%>/ConvertCsv/ConvertMSSQLCsv.do">
+		<input type="submit" value="導出MSSQLCSV">
+	</form>
+	
+	<form action="<%=request.getContextPath()%>/ConvertCsv/ConvertMYSQLCsv.do">
+		<input type="submit" value="導出MYSQLCSV">
 	</form>
 </body>
 </html>

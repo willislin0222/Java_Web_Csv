@@ -3,6 +3,7 @@ package com.csv.controller;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,40 +17,36 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.csv.model.DataVO;
+import com.csv.model.EMPDAO;
+import com.csv.model.EmpVO;
 
 public class Convert_Csv_Controller extends MultiActionController{
 
-	public ModelAndView ConvertCsv(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	Connection conn = null;
+	public ModelAndView ConvertORACLECsv(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		List<DataVO> list = new ArrayList<DataVO>();
-		list.add(new DataVO("aaa","0912468337","2018-04-13","1234"));
-		list.add(new DataVO("bbb","0912345677","2018-04-13","56779"));
-		list.add(new DataVO("ccc","0912213337","2018-04-13","12345454"));
-		list.add(new DataVO("ddd","0912132337","2018-04-13","123gdsg4"));
-		System.out.println("ConvertCsv 方法被呼叫:");
-		//導出Csv檔
-		try {
-			   String name = "/ConverCsv.csv";
-			   //判斷路徑是否存在，不存在就建立路徑
-	            File savepath = new File(request.getServletContext().getRealPath("/convert"));
-	            if(!savepath.exists()){
-	            	savepath.mkdirs();
-	            }
-	           FileWriter fw = new FileWriter(savepath + name);
-			   String header = "name,phone,date,address\r\n";
-			   fw.write(header);
-			   for (int i = 0; i<list.size(); i++) {
-			    StringBuffer str = new StringBuffer();
-			     str.append(list.get(i).getName() + "," + list.get(i).getPhone() + "," + list.get(i).getDate() + "," + list.get(i).getAddress() + "\r\n") ;
-			    fw.write(str.toString());
-			    fw.flush();
-
-			   }
-			   fw.close();
-			  } catch (IOException e) {
-			   e.printStackTrace();
-			  }
-		//return new ModelAndView("redirect:/result/ConvertOK.jsp", "greetingKey", ename);
+		System.out.println("ConvertORACLECsv 方法被呼叫:");
+		conn = new GetOracleDataBase().GetOracleConnecct();
+		EMPDAO dao = new EMPDAO();
+		List<EmpVO> list = dao.getAll(conn);
+		//建立檔案
+		String name = "/ConverOracleCsv.csv";
+		//判斷路徑是否存在，不存在就建立路徑
+        File savepath = new File(request.getServletContext().getRealPath("/convert"));
+        if(!savepath.exists()){
+         	savepath.mkdirs();
+        }
+        FileWriter fw = new FileWriter(savepath + name);
+        String header = "empno,ename,job,hiredate,sal,comm,deptno\r\n";
+        fw.write(header);
+		//輸出Csv檔
+		for(EmpVO alist : list){			   
+			StringBuffer str = new StringBuffer();
+			str.append(alist.getEmpno() + "," + alist.getEname() + "," + alist.getJob() + "," + alist.getHiredate() + "," + alist.getSal() + ","+ alist.getComm() + "," + alist.getDeptno() + "\r\n") ;
+			fw.write(str.toString());	
+		}
+		fw.flush();
+		fw.close();
 		return new ModelAndView("redirect:/result/ConvertOK.jsp");
 		
 	}
