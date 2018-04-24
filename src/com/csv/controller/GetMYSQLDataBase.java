@@ -4,19 +4,23 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class GetMySQLDataBase {
+public class GetMYSQLDataBase {
 	
 	private Connection conn =null;
 	
-	public GetMySQLDataBase() throws SQLException{
+	public GetMYSQLDataBase() throws SQLException{
 		try {
             Class.forName("com.mysql.jdbc.Driver");  //驅動程式-第四類
+            this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db01", "root", "1234");
             
         } catch (java.lang.ClassNotFoundException e) {
             System.err.println(e.getMessage());
         }
 		
-		this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db01", "root", "1234");
+		
 	}
 	
+	public Connection GetMYSQLConnecct(){
+		return conn;
+	}
 }
