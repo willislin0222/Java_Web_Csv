@@ -11,7 +11,7 @@ public class GetOracleDataBase {
 	public GetOracleDataBase() throws SQLException{
 		try {
             Class.forName("oracle.jdbc.driver.OracleDriver");  //驅動程式-第四類
-            this.conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "TEST", "TEST");
+            this.conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DEMO", "DEMO");
             
         } catch (java.lang.ClassNotFoundException e) {
             System.err.println(e.getMessage());
